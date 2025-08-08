@@ -4,17 +4,17 @@ import '../../core/app_constants.dart';
 import '../../widgets/common/custom_app_icon.dart';
 import '../../widgets/common/floating_elements.dart';
 import '../../widgets/auth/social_login_button.dart';
-import 'signup_screen.dart';
+import 'login_screen.dart';
 import '../home/home_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const CustomAppIcon(size: 100),
                     const SizedBox(height: AppConstants.spacing40),
                     Text(
-                      'Welcome back!',
+                      'Let\'s get started!',
                       style: Theme.of(context).textTheme.displayMedium?.copyWith(
                         fontWeight: FontWeight.w700,
                         color: AppColors.onSurface,
@@ -72,8 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
                       decoration: const InputDecoration(
-                        hintText: 'Laura@gmail.com',
-                        suffixIcon: Icon(Icons.check, color: AppColors.success),
+                        hintText: 'Enter your email',
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -90,30 +89,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     // Password field
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'PASSWORD',
-                            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: AppColors.onSurfaceVariant,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              // Handle forgot password
-                            },
-                            child: Text(
-                              'Forgot password?',
-                              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ],
+                      child: Text(
+                        'PASSWORD',
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppColors.onSurfaceVariant,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.5,
+                        ),
                       ),
                     ),
                     const SizedBox(height: AppConstants.spacing8),
@@ -121,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _passwordController,
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
-                        hintText: '••••••••',
+                        hintText: 'Create a password',
                         suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -146,22 +128,22 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: AppConstants.spacing40),
                     
-                    // Login button
+                    // Sign up button
                     SizedBox(
                       width: double.infinity,
                       height: AppConstants.buttonHeight,
                       child: ElevatedButton(
-                        onPressed: _isLoading ? null : _handleLogin,
+                        onPressed: _isLoading ? null : _handleSignup,
                         child: _isLoading
                             ? const CircularProgressIndicator(color: AppColors.onPrimary)
-                            : const Text('Log in'),
+                            : const Text('Sign up'),
                       ),
                     ),
                     const SizedBox(height: AppConstants.spacing32),
                     
                     // Or divider
                     Text(
-                      'or log in with',
+                      'or sign up with',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.onSurfaceVariant,
                       ),
@@ -171,37 +153,37 @@ class _LoginScreenState extends State<LoginScreen> {
                     // Social login buttons
                     SocialLoginRow(
                       onFacebookPressed: () {
-                        // Handle Facebook login
+                        // Handle Facebook signup
                       },
                       onGooglePressed: () {
-                        // Handle Google login
+                        // Handle Google signup
                       },
                       onApplePressed: () {
-                        // Handle Apple login
+                        // Handle Apple signup
                       },
                     ),
                     const SizedBox(height: AppConstants.spacing40),
                     
-                    // Sign up link
+                    // Login link
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Don\'t have an account? ',
+                          'Already an account? ',
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: AppColors.onSurfaceVariant,
                           ),
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.of(context).push(
+                            Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
-                                builder: (context) => const SignupScreen(),
+                                builder: (context) => const LoginScreen(),
                               ),
                             );
                           },
                           child: Text(
-                            'Get started!',
+                            'Log in',
                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: AppColors.primary,
                               fontWeight: FontWeight.w600,
@@ -221,7 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<void> _handleLogin() async {
+  Future<void> _handleSignup() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
@@ -229,7 +211,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     try {
-      // TODO: Implement actual login logic with your existing auth bloc
+      // TODO: Implement actual signup logic with your existing auth bloc
       await Future.delayed(const Duration(seconds: 1)); // Simulate API call
       
       if (mounted) {
@@ -243,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Login failed: ${e.toString()}'),
+            content: Text('Signup failed: ${e.toString()}'),
             backgroundColor: AppColors.error,
           ),
         );
